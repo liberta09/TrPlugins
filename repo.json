@@ -1,0 +1,8 @@
+{
+    "name": "Turkish Providers Repository | @liberta09",
+    "description": "Türkçe içerikli eklenti havuzu",
+    "manifestVersion": 1,
+    "pluginLists": [
+      "https://raw.githubusercontent.com/liberta09/TrPlugins/builds/plugins.json"
+    ]
+}
