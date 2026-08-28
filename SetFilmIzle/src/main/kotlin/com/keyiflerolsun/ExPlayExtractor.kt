@@ -14,7 +14,7 @@ open class ExPlay : ExtractorApi() {
     override suspend fun getUrl(url: String, referer: String?, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit) {
         val extRef   = referer ?: ""
         val partKey  = url.substringAfter("?partKey=").substringAfter("turkce").uppercase()
-        @Suppress("NAME_SHADOWING") val url      = url.substringBefore("?partKey=")
+        @Suppress("NAME_SHADOWING") val url = url.substringBefore("?partKey=")
         val iSource  = app.get(url, referer=extRef).text
 
         val videoUrl    = Regex("""videoUrl":"([^\",]+)""").find(iSource)?.groupValues?.get(1) ?: throw ErrorLoadingException("videoUrl not found")
@@ -24,14 +24,15 @@ open class ExPlay : ExtractorApi() {
         Log.d("Kekik_${this.name}", "m3uLink » $m3uLink")
 
         callback.invoke(
-            ExtractorLink(
-                source  = this.name,
-                name    = "${this.name} - $title",
-                url     = m3uLink,
-                referer = url,
-                quality = Qualities.Unknown.value,
-                isM3u8  = true
-            )
+            newExtractorLink(
+                source = this.name,
+                name   = "${this.name} - $title",
+                url    = m3uLink,
+                type   = ExtractorLinkType.M3U8
+            ) {
+                this.referer = url
+                this.quality = Qualities.Unknown.value
+            }
         )
     }
 }
